@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Automobile Service Center</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/css/materialize.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- NAVBAR CHUNG -->
+    <nav class="white">
+        <div class="nav-wrapper container">
+
+            <a href="/" class="brand-logo">
+                <img src="~/images/logo.png" style="height:50px;" />
+            </a>
+
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#" style="color:black; font-weight:bold;">Login</a></li>
+                <li><a href="#" style="color:black; font-weight:bold;">Contact</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    @RenderBody()
+
+    <!-- JS -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/materialize.min.js"></script>
+    <script src="~/js/init.js"></script>
+
+</body>
+</html>

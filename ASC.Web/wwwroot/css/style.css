@@ -1,0 +1,181 @@
+/* =========================================
+   Custom Stylesheet (Materialize Override)
+   ========================================= */
+
+/* ===== GENERAL ===== */
+nav ul a,
+nav .brand-logo {
+    color: #444;
+}
+
+p {
+    line-height: 2rem;
+}
+
+.padding-0px {
+    padding: 0 !important;
+}
+
+/* ===== LOGO ===== */
+.brand-logo {
+    display: flex;
+    align-items: center;
+}
+
+.brand-logo img {
+    height: 50px !important;
+    width: auto !important;
+}
+
+@media (max-width: 600px) {
+    .brand-logo img {
+        height: 40px;
+    }
+}
+
+/* ===== NAVBAR ===== */
+nav {
+    height: 64px;
+    line-height: 64px;
+}
+
+/* ===== SIDENAV ===== */
+.sidenav-trigger {
+    color: #26a69a;
+}
+
+.sidenav.sidenav-fixed {
+    width: 300px;
+}
+
+/* ===== HERO SECTION ===== */
+#index-banner {
+    position: relative;
+}
+
+/* FIX: căn giữa toàn bộ nội dung */
+.parallax-container {
+    min-height: 500px;
+    height: 100vh;
+    line-height: 0;
+    color: white;
+
+    display: flex;
+    justify-content: center;   /* căn ngang */
+    align-items: center;       /* căn dọc */
+    text-align: center;
+}
+
+/* Overlay làm tối ảnh */
+.parallax-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+/* Nội dung nằm trên ảnh */
+.parallax-container .section {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+/* Title */
+.header {
+    font-size: 3rem;
+    font-weight: 500;
+    color: #26a69a;
+}
+
+/* Subtitle */
+.parallax-container h5 {
+    color: #fff;
+}
+
+/* Button */
+.btn-large {
+    background-color: #26a69a;
+}
+
+.btn-large:hover {
+    background-color: #2bbbad;
+}
+
+/* ===== RESPONSIVE FIX (QUAN TRỌNG) ===== */
+@media only screen and (max-width: 992px) {
+    .parallax-container {
+        height: 100vh;
+    }
+
+    .parallax-container .section {
+        position: relative;
+        top: 0;
+    }
+
+    #index-banner .section {
+        top: 0;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+        font-size: 2rem;
+    }
+}
+
+/* ===== ICON BLOCK ===== */
+.icon-block {
+    padding: 0 15px;
+    text-align: center;
+}
+
+.icon-block .material-icons {
+    font-size: 48px;
+    color: #6d4c41;
+}
+
+/* ===== SECTION ===== */
+.section {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+}
+
+/* ===== FOOTER ===== */
+footer.page-footer {
+    margin: 0;
+}
+
+/* ===== LAYOUT ADMIN FIX ===== */
+header.secureLayout,
+main.secureLayout,
+footer.secureLayout {
+    padding-left: 300px;
+}
+
+@media only screen and (max-width: 992px) {
+    header.secureLayout,
+    main.secureLayout,
+    footer.secureLayout {
+        padding-left: 0;
+    }
+}
+
+/* ===== FIX CĂN ĐỀU NỘI DUNG ===== */
+main .container {
+    max-width: 1100px;
+}
+
+.page-footer .container {
+    max-width: 1100px;
+}
+
+.top-nav {
+    padding-left: 20px;
+}
+
+.margin-bottom-0px {
+    margin-bottom: 0;
+}
+
