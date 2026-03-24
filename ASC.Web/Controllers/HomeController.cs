@@ -9,12 +9,12 @@ namespace ASC.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationSettings _appSettings;
+        private readonly ASC.Web.Configuration.ApplicationSettings _appSettings;
 
         // ✅ Constructor duy nhất
         public HomeController(
             ILogger<HomeController> logger,
-            IOptions<ApplicationSettings> options)
+            IOptions<ASC.Web.Configuration.ApplicationSettings> options)
         {
             _logger = logger;
             _appSettings = options.Value;

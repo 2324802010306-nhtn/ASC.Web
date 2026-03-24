@@ -1,38 +1,48 @@
-using ASC.Web.Configuration;
+using ASC.DataAccess;
+using ASC.DataAccess.Interfaces;
+using ASC.Web; // 👈 dùng ApplicationSettings
 using ASC.Web.Data;
 using ASC.Web.Services;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // ================= DATABASE =================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string not found.");
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+// 👉 FIX ambiguous DbContext bằng FULL NAME
+builder.Services.AddDbContext<ASC.Web.Data.ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 // ================= IDENTITY =================
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.User.RequireUniqueEmail = true;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>();
+// 👉 FIX ambiguous DbContext
+.AddEntityFrameworkStores<ASC.Web.Data.ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
-// ================= CONFIG (LAB PART) =================
+// ================= CONFIG =================
 builder.Services.Configure<ApplicationSettings>(
-    builder.Configuration.GetSection("ApplicationSettings"));
+    builder.Configuration.GetSection("AppSettings"));
 
 // ================= MVC =================
 builder.Services.AddControllersWithViews();
 
+// ================= SERVICES =================
 builder.Services.AddTransient<IEmailSender, AuthMessageSender>();
 builder.Services.AddTransient<ISmsSender, AuthMessageSender>();
 
-var app = builder.Build();
+// ================= CUSTOM SERVICES =================
+builder.Services.AddSingleton<IIdentitySeed, IdentitySeed>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+var app = builder.Build(); // ✅ không còn lỗi
 
 // ================= PIPELINE =================
 if (app.Environment.IsDevelopment())
@@ -50,6 +60,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // ================= ROUTING =================
@@ -58,5 +69,19 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+// ================= SEED =================
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var seed = services.GetRequiredService<IIdentitySeed>();
+
+    await seed.Seed(
+        services.GetRequiredService<UserManager<IdentityUser>>(),
+        services.GetRequiredService<RoleManager<IdentityRole>>(),
+        services.GetRequiredService<IOptions<ApplicationSettings>>() // 👈 đúng type
+    );
+}
 
 app.Run();
